@@ -1,4 +1,3 @@
-
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -9,6 +8,7 @@ import {
   setEventText,
   setEventTime,
 } from './actions';
+
 import './Calendar.css';
 
 const Calendar = (props) => {
@@ -64,51 +64,61 @@ const Calendar = (props) => {
   };
 
   return (
-    <div className="calendar">
-      <div className="calendar-header">
-        <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))}>Prev</button>
-        <h2>{currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear()}</h2>
-        <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))}>Next</button>
+    <div className="calendar-container">
+      <div className="calendar">
+        <div className="calendar-header">
+          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))}>Prev</button>
+          <h2>{currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear()}</h2>
+          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))}>Next</button>
+        </div>
+        <div className="calendar-grid">
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+            <div key={day} className="calendar-day-name">{day}</div>
+          ))}
+          {days.map((day, index) => (
+            <div key={index} className="calendar-day" onClick={() => day && handleDayClick(day)}>
+              {day}
+  
+            </div>
+          ))}
+        </div>
+        
+        {selectedDate && (
+          <form onSubmit={handleEventSubmit} className="event-form">
+            <h3>Add Event on {selectedDate}</h3>
+            <input
+              type="text"
+              value={eventText}
+              onChange={(e) => setEventText(e.target.value)}
+              placeholder="Event Details"
+              required
+            />
+            <input
+              type="time"
+              value={eventTime}
+              onChange={(e) => setEventTime(e.target.value)}
+              placeholder="Time"
+              required
+            />
+            <button type="submit">Add Event</button>
+          </form>
+        )}
       </div>
-      <div className="calendar-grid">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-          <div key={day} className="calendar-day-name">{day}</div>
-        ))}
-        {days.map((day, index) => (
-          <div key={index} className="calendar-day" onClick={() => day && handleDayClick(day)}>
-            {day}
-            {day && events[`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`] && (
-              <div className="calendar-events">
-                {events[`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`].map((event, idx) => (
-                  <div key={idx} className="calendar-event">
-                    <span>{event.time} - {event.text}</span>
-                    <button onClick={() => handleDeleteEvent(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`, idx)}>Delete</button>
-                  </div>
-                ))}
+
+      <div className="all-events">
+        <h3> Events</h3>
+        {Object.keys(events).map(eventDate => (
+          <div key={eventDate} className="event-date">
+            <h4>{eventDate}</h4>
+            {events[eventDate].map((event, idx) => (
+              <div key={idx} className="event-detail">
+                <span>{event.time} - {event.text}</span>
+                <i id="icon" className="fa-solid fa-trash-can"  onClick={() => handleDeleteEvent(eventDate, idx)}></i>
               </div>
-            )}
+            ))}
           </div>
         ))}
       </div>
-      {selectedDate && (
-        <form onSubmit={handleEventSubmit} className="event-form">
-          <h3>Add Event on {selectedDate}</h3>
-          <input
-            type="text"
-            value={eventText}
-            onChange={(e) => setEventText(e.target.value)}
-            placeholder="Event Details"
-            required
-          />
-          <input
-            type="time"
-            value={eventTime}
-            onChange={(e) => setEventTime(e.target.value)}
-            required
-          />
-          <button type="submit">Add Event</button>
-        </form>
-      )}
     </div>
   );
 };

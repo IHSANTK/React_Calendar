@@ -1,8 +1,8 @@
-import { produce } from 'immer'; // Assuming you've installed Immer
+import { produce } from 'immer'; 
 
 const initialState = {
   currentDate: new Date(),
-  events: {}, // Consider a more structured event object if needed
+  events: {}, 
   selectedDate: null,
   eventText: '',
   eventTime: '',
@@ -34,7 +34,7 @@ const rootReducer = (state = initialState, action) => {
         draft.eventTime = action.payload;
         break;
       default:
-        break; // No change
+        break; 
     }
   });
 };

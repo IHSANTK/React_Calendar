@@ -104,4 +104,24 @@
     border: none;
     cursor: pointer;
   }
-  
+  .all-events{
+    box-shadow: 0px 1px 5px black;
+    background-color: #204266;
+    border-radius: 10px;
+    color: black;
+    padding-bottom: 10px;
+  }
+  .event-date{
+    background-color: rgb(65, 95, 121);
+margin: 10px 10px 0px 10px;
+
+box-shadow: 0px 5px 5px black;
+border-radius: 5px;
+  }
+  .event-detail{
+    color: #0c1a29;
+    font-weight: 700;
+  }
+  #icon{
+    margin-left: 15px;
+  }
